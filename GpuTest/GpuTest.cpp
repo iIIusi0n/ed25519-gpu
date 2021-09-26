@@ -33,7 +33,6 @@ int main() {
     assert(sizeof(public_key_t) == 32);
     assert(sizeof(private_key_t) == 64);
 
-    auto kernel_source = read_file("kernel.cl");
     auto hash_count = 1024 * 1024;
 
     assert(hash_count < 1024 * 1024 * 16);
@@ -60,7 +59,7 @@ int main() {
     compute::buffer buffer_c(context, hash_count * 32);
 
     compute::program program =
-        compute::program::create_with_source(kernel_source, context);
+        compute::program::create_with_source_file("kernel.cl", context);
     program.build();
 
     compute::kernel kernel(program, "ed25519_create_keypair");
